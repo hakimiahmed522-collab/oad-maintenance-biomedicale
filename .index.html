@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#123b5d">
+<title>OAD Maintenance Biomédicale</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f1f6fa;color:#183247}
+header{background:#123b5d;color:white;padding:25px 6%}
+header h1{margin:0;font-size:25px}
+header p{color:#d3e9f7}
+main{max-width:1100px;margin:28px auto;padding:0 18px}
+.hero,.panel,.card{background:white;border-radius:16px;padding:22px;margin-bottom:20px;box-shadow:0 5px 20px #123b5d10}
+.hero{background:linear-gradient(120deg,#dff5fb,white)}
+h2{margin-top:0}
+input{width:100%;padding:13px;border:1px solid #ccd9e3;border-radius:9px;font-size:16px;margin:10px 0}
+button{background:#1677b8;color:white;border:0;padding:11px 15px;border-radius:8px;cursor:pointer;font-weight:bold}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+.card{margin:0}
+.icon{font-size:32px}
+.tag{font-size:12px;color:#16856b;font-weight:bold}
+.card h3{margin:10px 0}
+.card p{color:#5e7180;line-height:1.5;font-size:14px}
+.panel li{margin:10px 0;line-height:1.5}
+.notice{background:#fff3d9;padding:14px;border-radius:10px;line-height:1.5;font-size:13px}
+footer{text-align:center;color:#647789;padding:30px;font-size:13px}
+@media(max-width:500px){header h1{font-size:21px}.hero,.panel{padding:17px}}
+</style>
+</head>
+<body>
+<header>
+  <h1>＋ OAD Maintenance Biomédicale</h1>
+  <p>Outil d’aide à la maintenance des dispositifs médicaux</p>
+</header>
+<main>
+  <section class="hero">
+    <p><strong>ESPACE TECHNIQUE</strong></p>
+    <h2>La maintenance biomédicale, organisée simplement.</h2>
+    <p>Recherchez un appareil médical et consultez ses repères de maintenance.</p>
+    <input id="search" placeholder="Rechercher : ventilateur, ECG, autoclave..." oninput="renderDevices()">
+  </section>
+
+  <h2>Bibliothèque des dispositifs médicaux</h2>
+  <section class="grid" id="devices"></section>
+
+  <section class="panel" id="details" hidden>
+    <button onclick="document.getElementById('details').hidden=true">Fermer ✕</button>
+    <h2 id="deviceTitle"></h2>
+    <p id="deviceDescription"></p>
+    <h3>Points de contrôle à étudier</h3>
+    <ul id="deviceChecks"></ul>
+    <div class="notice"><strong>Attention :</strong> cette fiche est pédagogique. Pour toute intervention réelle, respecter le manuel du fabricant, les procédures de l’établissement et les exigences de sécurité applicables.</div>
+  </section>
+
+  <section class="panel">
+    <h2>Checklist générale de maintenance préventive</h2>
+    <ul>
+      <li>Identifier l’appareil : marque, modèle, numéro de série et inventaire.</li>
+      <li>Consulter le manuel du fabricant et l’historique des interventions.</li>
+      <li>Inspecter visuellement le boîtier, les câbles et les accessoires.</li>
+      <li>Effectuer les tests fonctionnels prévus par le fabricant.</li>
+      <li>Réaliser les contrôles de sécurité et de performance requis avec les instruments adaptés.</li>
+      <li>Consigner les mesures, anomalies, actions correctives et résultats.</li>
+    </ul>
+    <div class="notice">Ne pas remettre en service un appareil défectueux ou dont la sécurité n’est pas établie. Aucun test ne doit être réalisé sur un patient dans le cadre d’une vérification technique.</div>
+  </section>
+</main>
+<footer>OAD Maintenance Biomédicale · Prototype éducatif · Version 1.0</footer>
+
+<script>
+const data=[
+{id:1,name:"Table de radiologie",icon:"🩻",category:"Diagnostic",desc:"Système d’imagerie utilisant les rayons X.",checks:["Inspecter la table, les mouvements, les freins et les commandes selon le manuel.","Vérifier câbles, connecteurs et accessoires.","Faire réaliser les contrôles qualité et de radioprotection requis par du personnel habilité."]},
+{id:2,name:"Ventilateur médical",icon:"🫁",category:"Thérapeutique",desc:"Dispositif d’assistance respiratoire.",checks:["Inspecter l’appareil, l’alimentation et les accessoires compatibles.","Vérifier les autotests et les alarmes selon le manuel.","Contrôler les performances avec un analyseur adapté et selon les spécifications du fabricant."]},
+{id:3,name:"Moniteur multiparamétrique",icon:"💓",category:"Diagnostic",desc:"Surveillance de paramètres physiologiques.",checks:["Inspecter l’écran, les câbles et les capteurs.","Vérifier alimentation et batterie.","Contrôler les fonctions et les mesures avec des simulateurs adaptés si requis."]},
+{id:4,name:"Autoclave",icon:"♨️",category:"Stérilisation",desc:"Équipement de stérilisation à la vapeur.",checks:["Inspecter la porte, le joint et la chambre selon la procédure.","Vérifier les enregistrements des cycles.","Appliquer les procédures de validation et contrôles requis."]},
+{id:5,name:"Électrocardiographe ECG",icon:"📈",category:"Diagnostic",desc:"Enregistrement de l’activité électrique cardiaque.",checks:["Inspecter câble patient, dérivations et connecteurs.","Vérifier batterie et système d’impression ou d’enregistrement.","Tester avec un simulateur ECG adapté si requis."]},
+{id:6,name:"Pompe à perfusion",icon:"💧",category:"Thérapeutique",desc:"Dispositif contrôlant l’administration de fluides.",checks:["Inspecter le boîtier, l’alimentation et les accessoires.","Vérifier alarmes et fonctions de sécurité selon le manuel.","Contrôler le débit avec un analyseur adapté et selon les tolérances du fabricant."]}
+];
+function renderDevices(){
+const q=document.getElementById("search").value.toLowerCase().trim();
+const list=data.filter(d=>(d.name+" "+d.category+" "+d.desc).toLowerCase().includes(q));
+document.getElementById("devices").innerHTML=list.length?list.map(d=>`
+<article class="card">
+<div class="icon">${d.icon}</div><div class="tag">${d.category}</div>
+<h3>${d.name}</h3><p>${d.desc}</p>
+<button onclick="showDetails(${d.id})">Consulter la fiche</button>
+</article>`).join(""):'<p>Aucun appareil trouvé.</p>';
+}
+function showDetails(id){
+const d=data.find(x=>x.id===id);
+document.getElementById("deviceTitle").textContent=d.name;
+document.getElementById("deviceDescription").textContent=d.desc;
+document.getElementById("deviceChecks").innerHTML=d.checks.map(c=>"<li>"+c+"</li>").join("");
+document.getElementById("details").hidden=false;
+document.getElementById("details").scrollIntoView({behavior:"smooth"});
+}
+renderDevices();
+</script>
+</body>
+</html>
