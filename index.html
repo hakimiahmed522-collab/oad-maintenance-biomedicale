@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
+<head>    
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#075985">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OAD - Logiciel de Maintenance Biomédicale</title>
@@ -11150,6 +11152,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const savedLang = localStorage.getItem('oad_lang');
     if (savedLang && translations[savedLang]) setLang(savedLang);
 });
+</script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./service-worker.js")
+      .catch((error) => console.error("Service Worker:", error));
+  });
+}
 </script>
 
 </body>
