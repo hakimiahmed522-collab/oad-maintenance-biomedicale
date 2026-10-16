@@ -1,0 +1,14 @@
+
+{
+  "id": "/oad-maintenance-biomedicale/",
+  "name": "OAD Maintenance Biomédicale",
+  "short_name": "OAD Biomédical",
+  "description": "Outil d'aide à la maintenance des dispositifs médicaux",
+  "lang": "fr",
+  "start_url": "/oad-maintenance-biomedicale/",
+  "scope": "/oad-maintenance-biomedicale/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#075985"
+}
